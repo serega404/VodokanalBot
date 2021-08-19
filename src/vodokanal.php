@@ -17,7 +17,7 @@ if (file_exists("db.json")) {
 // get DOM from URL
 $html = file_get_html($config['url']);
 
-$all_elements;
+$all_elements = null;
 
 $dateNow = date("d.m.Y");
 echo "Date now: " . $dateNow . "\n";
@@ -35,6 +35,11 @@ foreach ($html->find('td[bgcolor="#ffffff"]') as $e) {
     $all_elements[] = $content;
   }
 }
+
+if ($all_elements == null) {
+  echo "Posts not dound";
+  exit;
+} 
 
 echo "The number of posts for this day: " . count($all_elements) . "\n";
 
