@@ -24,7 +24,7 @@ echo "Date now: " . $dateNow . "\n";
 
 foreach ($html->find('td[bgcolor="#ffffff"]') as $e) {
   $date = "";
-  preg_match("/\\d{2}\\.\\d{2}\\.\\d{4}/", $e->plaintext, $date);
+  preg_match("/(0[1-9]|1[0-9]|2[0-9]|3[01])[.](0[1-9]|1[0-2])[.](20[0-9][0-9]|[0-9][0-9])/", $e->plaintext, $date);
 
   if (strcasecmp(reset($date), $dateNow) == 0) { // get current date posts
     // remove date from content
@@ -39,7 +39,7 @@ foreach ($html->find('td[bgcolor="#ffffff"]') as $e) {
 }
 
 if ($all_elements == null) {
-  echo "Posts not dound\n";
+  echo "Posts not found\n";
   exit;
 } 
 
