@@ -20,8 +20,8 @@ if TELEGRAM_CHANNEL == '':
 # Load database
 
 db = None
-if (os.path.isfile('db.json')):
-    with open('db.json', 'r', encoding='utf-8') as f:
+if (os.path.isfile('data/db.json')):
+    with open('data/db.json', 'r', encoding='utf-8') as f:
         db = json.load(f)
 else:
     print("Database not loaded")
@@ -71,6 +71,9 @@ else:
 
 # Save database
 
-with open('db.json', 'w', encoding='utf-8') as f:
+if not os.path.exists("data"):
+   os.makedirs("data")
+
+with open('data/db.json', 'w', encoding='utf-8') as f:
     json.dump(elements, f, ensure_ascii=False)
     print("Database updated")
