@@ -62,7 +62,7 @@ def send_message(message):
 # Compare db and elements
 
 if db is not None:
-    diff = list(set(elements).symmetric_difference(set(db)))
+    diff = set(elements) - set(db)
     if diff == []:  
         print("No new posts")
         exit()
