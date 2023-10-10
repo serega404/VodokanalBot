@@ -41,7 +41,7 @@ for tag in soup.find_all('font', size='2', face='VERDANA'):
     date = tag.select_one('font:nth-of-type(1)').b.text
     if not(date.split('.')[0] == str(datetime.today().day).zfill(2) and date.split('.')[1] == str(datetime.today().month).zfill(2)):
         continue
-    elements.append(tag.select_one('font:nth-of-type(2)').text.replace('\n', ''))
+    elements.append(date + "$" + tag.select_one('font:nth-of-type(2)').text.replace('\n', ''))
 
 if elements == []:
     print("No posts")
@@ -68,10 +68,10 @@ if db is not None:
         exit()
 
     for i in diff:
-        send_message(i)
+        send_message(i.split("$",1)[1])
 else:
     for element in elements:
-        send_message(element)
+        send_message(element.split("$",1)[1])
 
 # Save database
 
