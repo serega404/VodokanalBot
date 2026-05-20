@@ -1,0 +1,16 @@
+services:
+  vodokanalbot:
+    image: ghcr.io/serega404/vodokanalbot:main
+    container_name: VodokanalBot
+    restart: always
+    environment:
+      TZ: Europe/Moscow
+      TELEGRAM_TOKEN: TOKEN
+      TELEGRAM_CHANNEL: CHAT_ID
+      # PROXY_URL: socks5h://user:password@proxy-host:1080
+      # PROXY_URL: http://user:password@proxy-host:3128
+    volumes:
+      - vodokanal_bot_data:/app/data
+
+volumes:
+  vodokanal_bot_data:

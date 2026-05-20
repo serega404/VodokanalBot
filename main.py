@@ -8,6 +8,7 @@ URL = os.environ.get('VODOKANAL_URL', 'http://www.tgnvoda.ru/avarii.php')
 SEND_SILENT = os.environ.get('SEND_SILENT', False)
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
 TELEGRAM_CHANNEL = os.environ.get('TELEGRAM_CHANNEL', '')
+PROXY_URL = os.environ.get('PROXY_URL', '')
 
 if TELEGRAM_TOKEN == '':
     print("Telegram token is not set")
@@ -16,6 +17,16 @@ if TELEGRAM_TOKEN == '':
 if TELEGRAM_CHANNEL == '':
     print("Telegram channel is not set")
     exit()
+
+# Configure HTTP client
+
+session = requests.Session()
+
+if PROXY_URL != '':
+    session.proxies.update({
+        'http': PROXY_URL,
+        'https': PROXY_URL,
+    })
 
 # Load database
 
@@ -28,7 +39,7 @@ else:
 
 # Get data
 
-req = requests.get(URL)
+req = session.get(URL)
 
 if (req.status_code != 200):
     print("Request error: " + str(req.status_code))
@@ -52,7 +63,14 @@ print("The number of posts for this day:", len(elements))
 # Send telegram message
 
 def send_message(message):
-    req = requests.get("https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage?chat_id=" + TELEGRAM_CHANNEL + "&disable_notification=" + str(SEND_SILENT) + "&text=" + message)
+    req = session.get(
+        "https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage",
+        params={
+            'chat_id': TELEGRAM_CHANNEL,
+            'disable_notification': str(SEND_SILENT),
+            'text': message,
+        },
+    )
     if (req.status_code != 200):
         print("Telegram request error: " + str(req.status_code))
         exit()
@@ -63,7 +81,7 @@ def send_message(message):
 
 if db is not None:
     diff = set(elements) - set(db)
-    if diff == []:  
+    if not diff:
         print("No new posts")
         exit()
 
