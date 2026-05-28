@@ -11,7 +11,8 @@ RUN pip3 install -r requirements.txt
 COPY crontab /tmp/crontab
 RUN cat /tmp/crontab > /etc/crontabs/root
 
-COPY main.py main.py
+COPY start_telegram.py start_telegram.py
+COPY parser.py parser.py
 
 # run crond as main process of container
 CMD ["crond", "-f", "-l", "2"]
