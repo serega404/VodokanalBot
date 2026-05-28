@@ -3,7 +3,6 @@ import os
 from parser import create_session, publish_new_posts
 
 
-URL = os.environ.get('VODOKANAL_URL', 'http://www.tgnvoda.ru/avarii.php')
 SEND_SILENT = os.environ.get('SEND_SILENT', False)
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
 TELEGRAM_CHANNEL = os.environ.get('TELEGRAM_CHANNEL', '')
@@ -40,7 +39,6 @@ def main():
         publish_new_posts(
             send_message=lambda message: send_telegram_message(session, message),
             session=session,
-            url=URL,
         )
     except RuntimeError as error:
         print(error)

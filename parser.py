@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 
 DEFAULT_DB_PATH = "data/db.json"
-
+DEFAULT_VODOKANAL_URL = "http://www.tgnvoda.ru/avarii.php"
 
 @dataclass(frozen=True)
 class Post:
@@ -30,7 +30,6 @@ def create_session(proxy_url=""):
         })
 
     return session
-
 
 def load_database(path=DEFAULT_DB_PATH):
     if not os.path.isfile(path):
@@ -89,9 +88,9 @@ def get_new_posts(posts, database):
     return [post for post in posts if post.key not in database_keys]
 
 
-def publish_new_posts(send_message, session, url, db_path=DEFAULT_DB_PATH):
+def publish_new_posts(send_message, session, db_path=DEFAULT_DB_PATH):
     database = load_database(db_path)
-    posts = fetch_posts(session, url)
+    posts = fetch_posts(session, DEFAULT_VODOKANAL_URL)
 
     if not posts:
         print("No posts")

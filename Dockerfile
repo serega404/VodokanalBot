@@ -1,8 +1,9 @@
-FROM python:3.11.2-alpine3.17
+FROM python:3.12-alpine
 
 LABEL Maintainer="serega404"
 
 WORKDIR /app
+ARG START_FILE=start_telegram.py
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
@@ -11,7 +12,7 @@ RUN pip3 install -r requirements.txt
 COPY crontab /tmp/crontab
 RUN cat /tmp/crontab > /etc/crontabs/root
 
-COPY start_telegram.py start_telegram.py
+COPY ${START_FILE} start.py
 COPY parser.py parser.py
 
 # run crond as main process of container

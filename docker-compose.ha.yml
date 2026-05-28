@@ -1,16 +1,17 @@
 services:
-  vodokanalbot:
-    image: ghcr.io/serega404/vodokanalbot:main
+  vodokanalbot-ha:
+    image: ghcr.io/serega404/vodokanalbot-meshcore-ha:main
     build:
       context: .
       args:
-        START_FILE: start_telegram.py
-    container_name: VodokanalBot
+        START_FILE: start_meshcore_ha.py
+    container_name: VodokanalBotMeshCoreHA
     restart: always
     environment:
       TZ: Europe/Moscow
-      TELEGRAM_TOKEN: TOKEN
-      TELEGRAM_CHANNEL: CHAT_ID
+      HOME_ASSISTANT_URL: https://your-home-assistant-url
+      HOME_ASSISTANT_WEBHOOK_ID: CHANGE_ME_RANDOM_WEBHOOK_ID
+      HOME_ASSISTANT_WEBHOOK_CHANNEL: "0"
       # VODOKANAL_URL: http://www.tgnvoda.ru/avarii.php
       # PROXY_URL: socks5h://user:password@proxy-host:1080
       # PROXY_URL: http://user:password@proxy-host:3128

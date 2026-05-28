@@ -1,2 +1,2 @@
-@reboot cd /app && python3 /app/start_telegram.py 
-*/10 * * * *  cd /app && python3 /app/start_telegram.py 
+@reboot cd /app && python3 /app/start.py
+*/10 * * * * cd /app && python3 /app/start.py
