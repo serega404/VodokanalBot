@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 
 
 DEFAULT_DB_PATH = "data/db.json"
+SOURCE_TIMEOUT = (10, 60)
 
 
 @dataclass(frozen=True)
@@ -46,13 +47,15 @@ def save_database(posts, path=DEFAULT_DB_PATH):
     if directory and not os.path.exists(directory):
         os.makedirs(directory)
 
-    with open(path, "w", encoding="utf-8") as f:
+    temporary_path = os.fspath(path) + ".tmp"
+    with open(temporary_path, "w", encoding="utf-8") as f:
         json.dump([post.key for post in posts], f, ensure_ascii=False)
-        print("Database updated")
+    os.replace(temporary_path, path)
+    print("Database updated")
 
 
 def fetch_posts(session, url, today=None):
-    req = session.get(url)
+    req = session.get(url, timeout=SOURCE_TIMEOUT)
 
     if req.status_code != 200:
         raise RuntimeError("Request error: " + str(req.status_code))
